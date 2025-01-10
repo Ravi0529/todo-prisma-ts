@@ -1,69 +1,31 @@
 import { PrismaClient } from "@prisma/client"; // importing prisma client
+import express from "express";
+import dotenv from "dotenv";
+import authRouter from "./routes/auth.router.js";
+import todoRouter from "./routes/todo.router.js";
 
 const prisma = new PrismaClient(); // connection setup
 
-// create user
-const createUser = async (username: string, password: string, firstName: string, lastName: string, email: string) => {
-    const res = await prisma.user.create({
-        data: {
-            username,
-            password,
-            firstName,
-            lastName,
-            email
-        }
-    })
-    console.log(res);
-}
+dotenv.config({
+    path: "./.env"
+});
 
-// create todo
-const createTodo = async (userId: number, title: string, description: string) => {
-    const todo = await prisma.todo.create({
-        data: {
-            userId,
-            title,
-            description
-        }
-    })
-    console.log(todo);
-}
+const PORT = process.env.PORT || 3000;
 
-// get all todos
-const getTodos = async (userId: number) => {
-    const todos = await prisma.todo.findMany({
-        where: {
-            userId
-        }
-    })
-    console.log(todos);
-}
+const app = express();
 
-// get todos and user details
-const getTodosAndUserDetails = async (userId: number) => {
-    const todos = await prisma.todo.findMany({
-        where: {
-            userId
-        },
-        select: {
-            user: true,
-            title: true,
-            description: true
-        }
-    })
-    console.log(todos);
-}
+app.use(express.json());
+app.use("/v1/auth", authRouter);
+app.use("/v1/todo", todoRouter);
 
-// update todo
-const updateTodo = async (todoId: number, title: string, description: string, done: boolean) => {
-    const updatedTodo = await prisma.todo.update({
-        where: {
-            id: todoId
-        },
-        data: {
-            title,
-            description,
-            done
-        }
-    })
-    console.log(updatedTodo);
-}
+app.listen(3000, async () => {
+    console.log(`Server is running on port ${PORT}`);
+    try {
+        // Test database connection
+        await prisma.$connect();
+        console.log("DB connected");
+    } catch (error) {
+        console.error("Failed to connect to PostgreSQL:", error);
+        process.exit(1); // Exit the process if the database connection fails
+    }
+});
