@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/controllers/auth.controller.ts","./src/controllers/todo.controller.ts","./src/routes/auth.router.ts","./src/routes/todo.router.ts"],"version":"5.7.3"}
+{"root":["./src/index.ts","./src/controllers/auth.controller.ts","./src/controllers/todo.controller.ts","./src/middlewares/protectedroute.ts","./src/routes/auth.router.ts","./src/routes/todo.router.ts","./src/utils/generatecookieandsetcookie.ts"],"version":"5.7.3"}

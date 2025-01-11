@@ -3,8 +3,8 @@ import {createTodo, updateTodo, getAllTodos, todosAndUser} from "../controllers/
 
 const router = express.Router();
 
-router.get("/createTodo", createTodo);
-router.get("/updateTodo", updateTodo);
+router.post("/createTodo", createTodo);
+router.post("/updateTodo", updateTodo);
 router.get("/allTodos", getAllTodos);
 router.get("/displayAll", todosAndUser);
 
